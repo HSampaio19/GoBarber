@@ -1,8 +1,10 @@
 import Appointment from "../models/Appointment";
-import {startOfHour, parseISO, isBefor, isBefore} from 'date-fns'
+import {startOfHour, parseISO, isBefor, isBefore, format} from 'date-fns'
+import pt from 'date-fns/locale/pt'
 import User from "../models/User";
 import File  from "../models/File";
 import * as Yup from 'yup';
+import Notification from '../schemas/notification';
 
 class AppointmentController{
 
@@ -22,7 +24,7 @@ class AppointmentController{
       include:[{
         model: User,
         as: 'provider',
-        attributes: ['id', 'name'],
+        attributes: ['name'],
         include:[{
           model: File,
           as: 'avatar',
@@ -54,6 +56,10 @@ class AppointmentController{
       return res.status(401).json({erro: "The professional selected isn't a provider"})
     }
 
+    if(isProvider.id === req.userId){
+      return res.status(401).json({erro: "You can not create a appointment with you"})
+    }
+
     const hourstart = startOfHour(parseISO(date));
 
     if(isBefore(hourstart, new Date)){
@@ -76,8 +82,23 @@ class AppointmentController{
     const appointment = await Appointment.create({
         user_id: req.userId,
         provider_id,
-        date: hourstart
+        date: date
     })
+
+    //Provider Appointment notification
+
+    const user = await User.findByPk(req.userId)
+    const formattedDate = format(
+      appointment.date,
+      "'dia ' dd' de ' MMMM', as ' H:mm'h'",
+      {locale: pt}
+    )
+
+    await Notification.create({
+      content: `Novo agendamento de ${user.name} para ${formattedDate}`,
+      user: provider_id,
+    })
+
 
     return res.json(appointment)
   }
