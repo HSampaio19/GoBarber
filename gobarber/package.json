@@ -7,6 +7,7 @@
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
     "bcryptjs": "^2.4.3",
+    "bee-queue": "^1.4.0",
     "date-fns": "^2.0.0-beta.5",
     "express": "^4.18.1",
     "express-handlebars": "^6.0.6",
@@ -29,7 +30,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "queue": "nodemon src/queue.js"
   },
   "eslintConfig": {
     "extends": [
