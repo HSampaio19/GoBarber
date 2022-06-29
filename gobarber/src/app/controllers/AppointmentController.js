@@ -20,7 +20,7 @@ class AppointmentController{
         canceled_at: null,
       },
       order: ['date'],
-      attributes: ['id', 'date'],
+      attributes: ['id', 'date', 'past', 'cancelable'],
       limit: 20,
       offset: (page - 1) * 20,
       include:[{
@@ -72,7 +72,8 @@ class AppointmentController{
       where: {
         provider_id,
         canceled_at: null,
-        date: hourstart}
+        date: hourstart
+      }
     })
 
     if(checkAvailability){
@@ -84,7 +85,7 @@ class AppointmentController{
     const appointment = await Appointment.create({
         user_id: req.userId,
         provider_id,
-        date: date
+        date: hourstart
     })
 
     //Provider Appointment notification
