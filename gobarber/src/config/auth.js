@@ -1,5 +1,5 @@
 const authConfig = {
-  secret: '3adf40429bb044c545d6f8677a25532c',
+  secret: process.env.APP_SECRET,
   expiresIn: '7d'
 }
 

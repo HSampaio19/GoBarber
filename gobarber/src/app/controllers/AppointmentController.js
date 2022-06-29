@@ -72,7 +72,7 @@ class AppointmentController{
       where: {
         provider_id,
         canceled_at: null,
-        date: hourstart
+        date: hourstart,
       }
     })
 
@@ -85,7 +85,7 @@ class AppointmentController{
     const appointment = await Appointment.create({
         user_id: req.userId,
         provider_id,
-        date: hourstart
+        date: hourstart,
     })
 
     //Provider Appointment notification
