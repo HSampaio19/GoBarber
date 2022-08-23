@@ -74,7 +74,8 @@ class UserController{
       return res.status(401).json({Error: "Password doesn't match"})
     }
     // a propriedade update utilizada a baixo e uma propriedade do modal User e nao a funcao update que foi criada
-    // const {id , name, provider} = await user.update(req.body)
+
+    await user.update(req.body)
 
     const {id, name, avatar} = await User.findByPk(req.userId,{
       include:[{
@@ -83,6 +84,9 @@ class UserController{
         attributes: ['id', 'path', 'url']
       }]
     })
+
+
+
     return res.json({
       id,
       name,
